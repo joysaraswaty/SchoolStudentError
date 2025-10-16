@@ -1,0 +1,6 @@
+ID;schoolid;SchoolName;Principal;SchoolStrength;Curriculum;rating;createdAt;createdBy;modifiedAt;modifiedBy
+a86a890e-4665-45da-a013-7fd8f1f0999f;1;Greenwood High;Alice Johnson;500;CBSE;A;2021-06-27T14:52:23Z;admin;2021-06-27T14:52:23Z;admin
+f194e7bf-f155-45ba-b130-56ee7e2f3622;2;Sunnydale Academy;Bob Smith;300;ICSE;B;2021-06-27T14:52:23Z;admin;2021-06-27T14:52:23Z;admin
+6ddff710-b2ed-444f-be00-b2226d616bc4;3;Riverside School;Charlie Brown;450;IGCSE;A;2021-06-27T14:52:23Z;admin;2021-06-27T14:52:23Z;admin
+1cf11d82-f8ae-499d-97ee-1bcea4ef447e;4;Maple Leaf School;Diana Prince;600;State;A;2021-06-27T14:52:23Z;admin;2021-06-27T14:52:23Z;admin
+a254993a-19e5-46c3-bd77-0e6f75532bd8;5;Oakridge International;Ethan Hunt;700;IB;A;2021-06-27T14:52:23Z;admin;2021-06-27T14:52:23Z;admin

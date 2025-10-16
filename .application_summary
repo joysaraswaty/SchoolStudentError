@@ -1,0 +1,5 @@
+{
+  "ProjectOverviewURL": "https://trial-dev-bkip0wnv.launchpad.cfapps.us10.hana.ondemand.com/lcapStudent_Details_Joule.Student_Details_JouleLaunchpad-1.0.0/",
+  "DeployedUTCTime": "2025-10-16T19:50:06.811Z",
+  "ApplicationLogURL": "https://logs.cf.us10-001.hana.ondemand.com/app/dashboards#/view/Overview?_g=(filters:!((query:(match_phrase:(component_name:Student_Details_Joule-srv)))))"
+}

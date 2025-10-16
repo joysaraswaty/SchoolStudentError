@@ -1,0 +1,2 @@
+sap.ui.define(["sap/fe/test/JourneyRunner","schoolmanagement/test/integration/pages/SchoolsList","schoolmanagement/test/integration/pages/SchoolsObjectPage"],function(e,t,n){"use strict";var o=new e({launchUrl:sap.ui.require.toUrl("schoolmanagement")+"/test/flpSandbox.html#schoolmanagement-tile",pages:{onTheSchoolsList:t,onTheSchoolsObjectPage:n},async:true});return o});
+//# sourceMappingURL=JourneyRunner.js.map

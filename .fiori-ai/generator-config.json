@@ -1,0 +1,32 @@
+{
+    "version": "0.2",
+    "floorplan": "FE_LROP",
+    "project": {
+        "name": "school-management",
+        "targetFolder": "/home/user/projects/Student_Details_Joule",
+        "title": "School Management",
+        "description": "Manage school details and view associated students",
+        "ui5Version": "1.136.0",
+        "localUI5Version": "1.82.2",
+        "sapux": true
+    },
+    "service": {
+        "servicePath": "/service/student_Details_Joule/",
+        "capService": {
+            "projectPath": "/home/user/projects/Student_Details_Joule",
+            "serviceName": "student_Details_JouleSrv",
+            "serviceCdsPath": "srv/service"
+        }
+    },
+    "entityConfig": {
+        "mainEntity": {
+            "entityName": "Schools"
+        },
+        "generateLROPAnnotations": true
+    },
+    "projectTemplateType": "LIST_REPORT_OBJECT_PAGE",
+    "telemetryData": {
+        "generationSourceName": "AI Headless",
+        "generationSourceVersion": "1.19.1"
+    }
+}

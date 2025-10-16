@@ -1,0 +1,235 @@
+_schema-version: "3.1"
+ID: Student_Details_Joule
+description: A simple CAP project.
+version: 1.0.0
+modules:
+- name: Student_Details_Joule-schoolmanagement
+  type: html5
+  path: app/school-management
+  build-parameters:
+    _artifactName: schoolmanagement.zip
+    build-result: dist-zip
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: Student_Details_Joule-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: Student_Details_Joule-service-uaa
+  - name: Student_Details_Joule-service-db
+  parameters:
+    buildpack: nodejs_buildpack
+  build-parameters:
+    builder: npm
+    ignore:
+    - node_modules
+    - package-lock.json
+- name: Student_Details_Joule-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: Student_Details_Joule-service-uaa
+  - name: Student_Details_Joule-service-db
+  - name: Student_Details_Joule-service-destination
+  - name: Student_Details_Joule-service-metadata
+  - name: Student_Details_Joule-service-connectivity
+  - name: Student_Details_Joule-service-logs
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    memory: 256MB
+  build-parameters:
+    builder: npm
+    ignore:
+    - node_modules
+    - package-lock.json
+- name: Student_Details_Joule-aux-destinations
+  type: com.sap.application.content
+  requires:
+  - name: Student_Details_Joule-service-uaa
+    parameters:
+      service-key:
+        name: Student_Details_Joule-uaa-key
+  - name: srv-api
+  - name: Student_Details_Joule-service-html5-apps-repo-host
+    parameters:
+      service-key:
+        name: Student_Details_Joule-html5-apps-repo-host-key
+  - name: Student_Details_Joule-service-destination
+    parameters:
+      content-target: true
+  parameters:
+    content:
+      subaccount:
+        destinations:
+        - Authentication: OAuth2UserTokenExchange
+          Name: Student_Details_Joule-service-uaa
+          ServiceInstanceName: Student_Details_Joule-uaa
+          ServiceKeyName: Student_Details_Joule-uaa-key
+          sap.cloud.service: lcap.Student_Details_Joule
+        - Authentication: OAuth2UserTokenExchange
+          Name: Student_Details_Joule-app-srv
+          TokenServiceInstanceName: Student_Details_Joule-uaa
+          TokenServiceKeyName: Student_Details_Joule-uaa-key
+          URL: ~{srv-api/srv-url}
+          sap.cloud.service: lcap.Student_Details_Joule
+        - Name: Student_Details_Joule-service-html5-apps-repo-host
+          ServiceInstanceName: Student_Details_Joule-html5-apps-repo-host
+          ServiceKeyName: Student_Details_Joule-html5-apps-repo-host-key
+          sap.cloud.service: lcap.Student_Details_Joule
+        - AppgyverEnabled: true
+          Authentication: OAuth2UserTokenExchange
+          HTML5.DynamicDestination: true
+          MobileEnabled: true
+          Name: Student_Details_Joule-student_Details_JouleSrv
+          TokenServiceInstanceName: Student_Details_Joule-uaa
+          TokenServiceKeyName: Student_Details_Joule-uaa-key
+          URL: ~{srv-api/srv-url}/service/student_Details_Joule
+          WebIDEEnabled: true
+          sap.applicationdevelopment.actions.enabled: true
+          sap.build.usage: CAP
+          sap.cloud.service: lcap.Student_Details_Joule
+          sap.processautomation.enabled: true
+        existing_destinations_policy: update
+  build-parameters:
+    no-source: true
+- name: Student_Details_Joule-launchpad
+  type: html5
+  path: build/launchpad
+  build-parameters:
+    _artifactName: launchpad.zip
+    build-result: ../../build/dist
+    builder: custom
+    commands:
+    - npm install
+    - npx -p @ui5/cli@^3.0.0 ui5 build --dest dist --include-task=generateCachebusterInfo
+    - bash -c "cd dist && npx bestzip ../../../build/dist/launchpad.zip *"
+    - rm -rf dist
+    supported-platforms: []
+- name: Student_Details_Joule-aux-ui-deployer
+  type: com.sap.application.content
+  path: build/ui-deployer
+  requires:
+  - name: Student_Details_Joule-service-html5-apps-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - schoolmanagement.zip
+      name: Student_Details_Joule-schoolmanagement
+      target-path: resources
+    - artifacts:
+      - launchpad.zip
+      name: Student_Details_Joule-launchpad
+      target-path: resources
+    - artifacts:
+      - managestudentschool.zip
+      name: managestudentschool
+      target-path: resources/
+- name: managestudentschool
+  type: html5
+  path: app/school
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: Student_Details_Joule-service-uaa
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      oauth2-configuration:
+        credential-types:
+        - binding-secret
+        - x509
+        redirect-uris:
+        - https://${subdomain}.launchpad.${default-domain}/login/*
+        - https://${subdomain}.${default-domain}/login/*
+      role-collections: []
+      xsappname: Student_Details_Joule-${space}
+    path: xs-security.json
+    service: xsuaa
+    service-name: Student_Details_Joule-uaa
+    service-plan: application
+- name: Student_Details_Joule-service-db
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: hana
+    service-name: Student_Details_Joule-db
+    service-plan: hdi-shared
+- name: Student_Details_Joule-service-destination
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: Student_Details_Joule-destination
+    service-plan: lite
+- name: Student_Details_Joule-service-metadata
+  type: org.cloudfoundry.user-provided-service
+  parameters:
+    config:
+      default-domain: ${default-domain}
+    service: metadata
+    service-name: Student_Details_Joule-metadata
+    service-plan: standard
+- name: Student_Details_Joule-service-connectivity
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: connectivity
+    service-name: Student_Details_Joule-connectivity
+    service-plan: lite
+- name: Student_Details_Joule-service-logs
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: application-logs
+    service-name: Student_Details_Joule-logs
+    service-plan: lite
+- name: Student_Details_Joule-service-html5-apps-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: Student_Details_Joule-html5-apps-repo-host
+    service-plan: app-host
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+  subdomain: trial-dev-bkip0wnv
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - rm -rf build/dist
+    - mkdir -p build/dist
+    - rm -rf build/ui-deployer
+    - mkdir -p build/ui-deployer
+  - builder: custom
+    commands:
+    - npm install --production
+    - bash -c "cds -v | grep 'cds-dk' || npm i --production --no-save @sap/cds-dk"
+    - bash -c "export PATH=$PATH:$(pwd)/node_modules/.bin"
+    - cds build --production
+  after-all:
+  - builder: custom
+    commands:
+    - npm install

@@ -1,0 +1,6 @@
+ID;studentid;firstName;lastName;dateOfBirth;dateOfJoining;email;phoneNumber;school_ID;createdAt;createdBy;modifiedAt;modifiedBy
+a86a890e-4665-45da-a013-7fd8f1f0999f;1;John;Doe;2005-05-15;2021-06-01;john.doe@example.com;1234567890;a86a890e-4665-45da-a013-7fd8f1f0999f;2021-06-27T14:52:23Z;admin;2021-06-27T14:52:23Z;admin
+f194e7bf-f155-45ba-b130-56ee7e2f3622;2;Jane;Smith;2006-07-20;2021-06-01;jane.smith@example.com;0987654321;f194e7bf-f155-45ba-b130-56ee7e2f3622;2021-06-27T14:52:23Z;admin;2021-06-27T14:52:23Z;admin
+6ddff710-b2ed-444f-be00-b2226d616bc4;3;Michael;Johnson;2004-08-30;2021-06-01;michael.johnson@example.com;1122334455;6ddff710-b2ed-444f-be00-b2226d616bc4;2021-06-27T14:52:23Z;admin;2021-06-27T14:52:23Z;admin
+1cf11d82-f8ae-499d-97ee-1bcea4ef447e;4;Emily;Davis;2005-09-10;2021-06-01;emily.davis@example.com;2233445566;1cf11d82-f8ae-499d-97ee-1bcea4ef447e;2021-06-27T14:52:23Z;admin;2021-06-27T14:52:23Z;admin
+a254993a-19e5-46c3-bd77-0e6f75532bd8;5;Daniel;Wilson;2007-10-25;2021-06-01;daniel.wilson@example.com;3344556677;a254993a-19e5-46c3-bd77-0e6f75532bd8;2021-06-27T14:52:23Z;admin;2021-06-27T14:52:23Z;admin

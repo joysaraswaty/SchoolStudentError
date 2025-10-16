@@ -1,0 +1,1 @@
+using student_Details_JouleSrv as service from '../../srv/service';
