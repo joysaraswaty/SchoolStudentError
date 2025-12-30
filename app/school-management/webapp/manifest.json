@@ -24,7 +24,23 @@
           "odataVersion": "4.0"
         }
       }
+    },
+    
+    "crossNavigation": {
+      "inbounds": {
+        "Cloud-manage": {
+          "semanticObject": "Cloud",
+          "action": "create",
+          "title": "{{Cloud-manage.flpTitle}}",
+          "subTitle": "{{Cloud-manage.flpSubtitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
     }
+
   },
   "sap.ui": {
     "technology": "UI5",
